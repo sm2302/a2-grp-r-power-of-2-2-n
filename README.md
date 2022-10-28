@@ -136,6 +136,39 @@ chord_length <- 2 * sin(theta) * radius
 
 ## Method 3 (of 3) - random midpoints
 
+The question instructs to choose a point anywhere within the circle, and construct the chord such that the point chosen is the midpoint of the chord.
+
+We used a solution from [stackoverflow - Generate a random point within a circle (uniformly)](https://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly) for how to decide on randomizing the position of points, which generates a random direction/angle from the center point and also a random distance from the center to the new point, in a way such that the random points would be uniformly distributed within the circle.
+
+The reason square-root is used in randomizing distance is sufficiently explained in the top answer of the discussion, but the important points are summarized below
+
+![The illustration](assets/C1.png)
+
+Same as previously, we could use the distance $d$ to compute $\theta$ via
+
+$$ \cos{\theta} = \frac{d}{r} $$
+
+```R
+d <- radius * sqrt(runif(N, 0, 1))
+theta <- acos(d / radius)
+
+# Which can be further simplified as illustrated below
+```
+
+![The illustration](assets/C2.png)
+
+Thus for this last method (randomize chord midpoints), we may simply use:
+
+```R
+theta <- acos(sqrt(runif(N, 0, 1)))
+chord_length <- 2 * sin(theta) * radius
+```
+
+End of elaboration
+
+___
+
+
 # Betrand's Paradox
 
 The Bertrand paradox is generally presented as follows:
