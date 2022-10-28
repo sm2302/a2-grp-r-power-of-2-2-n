@@ -1,34 +1,27 @@
-# Instruction to students: You may clear the code in this file and replace it
-# with your own.
-
 library(tidyverse)
-library(ggforce)
-theme_set(theme_void())
 
-# Draw a random chord in a unit circle centred at origin -----------------------
+N <- 100000
 
-# Coordinates of equilateral triangle
-eqtri_df <- tibble(
-  x    = c(0, sqrt(3) / 2, -sqrt(3) / 2),
-  y    = c(1, -0.5, -0.5),
-  xend = c(sqrt(3) / 2, -sqrt(3) / 2, 0),
-  yend = c(-0.5, -0.5, 1)
+get_theta_by_rand_endpoint <- function(N = 1) {
+  a1 <- runif(N, 0, 2*pi)
+  a2 <- runif(N, 0, 2*pi)
+  
+  adiff <- abs(a1 - a2)
+  
+  adiff[adiff > pi] <- 2 * pi - adiff[adiff > pi]
+  
+  return(adiff/2)
+}
+
+samples <- data.frame(
+  radius = runif(N, 1, 100),
+  theta = get_theta_by_rand_endpoint(N)
 )
 
-# Coordinates of random chord
-rdmchr_df <- tibble(
-  x    = 0.93636368,
-  y    = 0.35103142,
-  xend = -0.9999991,
-  yend = -0.001326758
-)
+chord_length <- 2 * sin(samples$theta) * samples$radius
 
-# Plot
-p <- ggplot() +
-  ggforce::geom_circle(aes(x0 = 0, y0 = 0, r = 1), col = "gray50") +
-  geom_segment(data = eqtri_df, aes(x = x, y = y, xend = xend, yend = yend)) +
-  geom_segment(data = rdmchr_df, aes(x = x, y = y, xend = xend, yend = yend),
-               col = "red3") +
-  coord_equal()
+triangle_length <- sqrt(3) * samples$radius
 
-ggsave(p, file = "plot.png", height = 5, width = 7)
+mean(chord_length > triangle_length) # 0.333
+
+# For method A, Pr(ch_len > tr_len) is 0.333
