@@ -1,4 +1,5 @@
 library(tidyverse)
+library(ggplot2)
 
 N <- 100000
 
@@ -65,3 +66,33 @@ results$PrA[3*N] # 0.25
 # For method A, Pr(ch_len > tr_len) is 0.333
 # For method B, Pr(ch_len > tr_len) is 0.5
 # For method C, Pr(ch_len > tr_len) is 0.25
+
+# Plot data
+ggplot(results) +
+  geom_line(
+    aes(
+      nS,
+      PrA,
+      col = rand_method
+    ),
+    alpha = 0.4, 
+    size = 0.8
+  ) +
+  scale_y_continuous(
+    limits = c(0, 1),
+    breaks = round(c(
+      0,
+      0.25,
+      0.33,
+      0.5,
+      1
+    ), 2),
+    minor_breaks = NULL
+  ) +
+  labs(
+    col = "Randomizing method",
+    x = "n(S)",
+    y = "Pr(A) = n(A) / n(S)",
+    title = "Principle of Indifference; Pr(A) = n(A) / n(S)",
+    subtitle = "Plotted against n(S)"
+  )
