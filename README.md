@@ -5,8 +5,8 @@ As the number of outputs $n(S)$ increases, $\Pr(A) = \frac{n(A)}{n(S)}$ converge
 | Method | $Pr(A)$ |
 | ------ | ------- |
 | Random endpoints | $\frac{1}{3}$ |
-| Random radial points | $\frac{1}{4}$ |
-| Random chord midpoints | $\frac{1}{2}$ |
+| Random radial points | $\frac{1}{2}$ |
+| Random chord midpoints | $\frac{1}{4}$ |
 
 ![Plot showing convergence of Pr(A)](assets/poi_plot.png)
 
