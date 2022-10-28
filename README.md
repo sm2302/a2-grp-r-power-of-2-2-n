@@ -1,3 +1,17 @@
+# Results
+
+![Plot showing convergence of Pr(A)](assets/poi_plot.png)
+
+# Code elaboration
+
+## Equilateral triangle length
+
+## Method 1 (of 3) - random endpoints
+
+## Method 2 (of 3) - random radial points
+
+## Method 3 (of 3) - random midpoints
+
 # Betrand's Paradox
 
 The Bertrand paradox is generally presented as follows:

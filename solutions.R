@@ -1,38 +1,7 @@
 library(tidyverse)
 library(ggplot2)
 
-N <- 100000
-
-get_theta_by_rand_endpoint <- function(N = 1) {
-  a1 <- runif(N, 0, 2*pi)
-  a2 <- runif(N, 0, 2*pi)
-  
-  adiff <- abs(a1 - a2)
-  
-  adiff[adiff > pi] <- 2 * pi - adiff[adiff > pi]
-  
-  return(adiff/2)
-}
-
-get_theta_by_rand_radial_points <- function(N) {
-  # d <- runif(N, 0, radius)
-  # theta <- acos(d / radius)
-  
-  # simplify to:
-  
-  theta <- acos(runif(N, 0, 1))
-  return(theta)
-}
-
-get_theta_by_rand_midpoints <- function(N) {
-  # d <- radius * sqrt(runif(N, 0, 1))
-  # theta <- acos(d / radius)
-  
-  # simplify to:
-  
-  theta <- acos(sqrt(runif(N, 0, 1)))
-  return(theta)
-}
+N <- 100000 # Number of random tests generated via each method
 
 samples <- data.frame(
   radius = runif(N * 3, 1, 100),
@@ -41,10 +10,10 @@ samples <- data.frame(
     rep("B) Radial points", N),
     rep("C) Chord midpoints", N)
   )),
-  theta = c(
-    get_theta_by_rand_endpoint(N), 
-    get_theta_by_rand_radial_points(N),
-    get_theta_by_rand_midpoints(N)
+  theta = c( # Code below to be explained in README.md
+    runif(N, 0, pi / 2), # via. randomized endpoints
+    acos(runif(N, 0, 1)), # via. randomized radial points
+    acos(sqrt(runif(N, 0, 1))) # randomized chord midpoint positions
   )
 )
 
@@ -59,14 +28,6 @@ results <- samples %>%
     PrA = nA / nS
   )
 
-results$PrA[N] # 0.333
-results$PrA[2*N] # 0.5
-results$PrA[3*N] # 0.25
-
-# For method A, Pr(ch_len > tr_len) is 0.333
-# For method B, Pr(ch_len > tr_len) is 0.5
-# For method C, Pr(ch_len > tr_len) is 0.25
-
 # Plot data
 ggplot(results) +
   geom_line(
@@ -75,16 +36,22 @@ ggplot(results) +
       PrA,
       col = rand_method
     ),
-    alpha = 0.4, 
+    alpha = 0.4, # Add a bit of transparency in case of line overlaps
     size = 0.8
+  ) +
+  scale_x_log10(
+    limits = c(1, N),
+    breaks = c(1, 10, 100, 1000, 10000, N),
+    minor_breaks = NULL,
+    labels = sprintf("10^%.0f", log10(c(1, 10, 100, 1000, 10000, N)))
   ) +
   scale_y_continuous(
     limits = c(0, 1),
     breaks = round(c(
       0,
-      0.25,
-      0.33,
-      0.5,
+      results$PrA[N],
+      results$PrA[2 * N],
+      results$PrA[3 * N],
       1
     ), 2),
     minor_breaks = NULL
