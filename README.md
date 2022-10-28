@@ -14,6 +14,26 @@ As the number of outputs $n(S)$ increases, $\Pr(A) = \frac{n(A)}{n(S)}$ converge
 
 ## Equilateral triangle length
 
+[study.com - How to Inscribe an Equilateral Triangle in a Circle](https://study.com/skill/learn/how-to-inscribe-an-equilateral-triangle-in-a-circle-explanation.html) has explained in detail regarding measurements of a equilateral triangle in a circle.
+
+The relevant summary in our case (computing its length) is shown in the picture below:
+
+![Understanding the triangle's s/2 computation](assets/T1.png)
+
+The equation can be simplified as such:
+
+$$\frac{\sqrt{3}}{2} = \sin(60) = \frac{\frac{s}{2}}{r}$$
+
+$$\frac{\frac{s}{2}}{r} = \frac{\sqrt{3}}{2}$$
+
+$$s = r \times \sqrt{3}$$
+
+Thus the code for computing any circle's corresponding equilateral triangle's side length $s$:
+
+```R
+triangle_length = sqrt(3) * radius
+```
+
 ## Method 1 (of 3) - random endpoints
 
 ## Method 2 (of 3) - random radial points
