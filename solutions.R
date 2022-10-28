@@ -3,6 +3,8 @@ library(ggplot2)
 
 N <- 100000 # Number of random tests generated via each method
 
+# NOTE: Elaboration on the code/formulas used is included in our README.md
+
 samples <- data.frame(
   radius = runif(N * 3, 1, 100),
   rand_method = as.factor(c(
@@ -10,7 +12,7 @@ samples <- data.frame(
     rep("B) Radial points", N),
     rep("C) Chord midpoints", N)
   )),
-  theta = c( # Code below to be explained in README.md
+  theta = c( # Code below explained in README.md
     runif(N, 0, pi / 2), # via. randomized endpoints
     acos(runif(N, 0, 1)), # via. randomized radial points
     acos(sqrt(runif(N, 0, 1))) # randomized chord midpoint positions

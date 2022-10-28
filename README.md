@@ -31,10 +31,72 @@ $$s = r \times \sqrt{3}$$
 Thus the code for computing any circle's corresponding equilateral triangle's side length $s$:
 
 ```R
-triangle_length = sqrt(3) * radius
+triangle_length <- sqrt(3) * radius
 ```
 
 ## Method 1 (of 3) - random endpoints
+
+For this method, the question instructs to choose two random points on the circumference of the circle, and draw the chord joining them.
+
+For this, we may make use of two random variables corresponding to just the direction/angle of the pair of points from the circle's midpoint, and disregard their exact positions on the circumference as those won't be needed for further computation.
+
+```R
+  N <- 1 # Number of samples
+  
+  a1 <- runif(N, 0, 2*pi)
+  a2 <- runif(N, 0, 2*pi)
+```
+
+It is obvious from the picture below that directly choosing a random direction from the center is the same as selecting a random point on the circumference and computing its direction.
+
+![The illustration](assets/A1.png)
+
+We may compute the difference of the two random angles by this code snippet
+
+```R
+get_endpoint_a_diff <- function(N = 1) {
+
+  a1 <- runif(N, 0, 2*pi)
+  a2 <- runif(N, 0, 2*pi)
+
+  adiff <- abs(a1 - a2)
+
+  adiff[adiff > pi] <- 2 * pi - adiff[adiff > pi]
+  
+  return(adiff)
+}
+```
+
+![The illustration](assets/A2.png)
+
+However, as illustrated above, it is evident that
+  - Having two random variables $a_1 \in (0, 2\pi)$ and $a_2 \in (0, 2\pi)$ is not at all necessary as the difference between the two random angles are also uniform from $(0, 2\pi)$
+  - Any reflex angle $a \in (\pi, 2\pi)$ can be expressed as its non-reflex counterpart i.e. $a' = 2\pi-a$
+    - Because the random distribution is uniform i.e. $Pr(a < \pi) \approx Pr(a > \pi)$ we could then just generate $a$ from $(0, \pi)$ instead.
+
+```R
+get_endpoint_a_diff <- function(N = 1) {
+  # Angles of individual points no longer matter
+
+  # Choosing a random value from 0 to pi is sufficient
+  # as any reflex angle > pi would have been converted to "< pi" anyway
+
+  adiff <- runif(N, 0, pi)
+  
+  return(adiff)
+}
+```
+
+However, as we would be computing the chord length via basic trigonometry, we may assume $\theta$ to be half of the angle difference, and randomize that directly instead, as illustrated below
+
+![The illustration](assets/A3.png)
+
+Thus for this first method (randomize endpoints), we may simply use:
+
+```R
+theta <- runif(N, 0, pi / 2)
+chord_length <- 2 * sin(theta) * radius
+```
 
 ## Method 2 (of 3) - random radial points
 
