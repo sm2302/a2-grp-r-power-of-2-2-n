@@ -35,6 +35,11 @@ get_theta_by_rand_midpoints <- function(N) {
 
 samples <- data.frame(
   radius = runif(N * 3, 1, 100),
+  rand_method = as.factor(c(
+    rep("A) Endpoints", N),
+    rep("B) Radial points", N),
+    rep("C) Chord midpoints", N)
+  )),
   theta = c(
     get_theta_by_rand_endpoint(N), 
     get_theta_by_rand_radial_points(N),
@@ -42,13 +47,20 @@ samples <- data.frame(
   )
 )
 
-chord_length <- 2 * sin(samples$theta) * samples$radius
+results <- samples %>%
+  group_by(rand_method) %>%
+  summarize(
+    chord_length = 2 * sin(theta) * radius,
+    triangle_length = sqrt(3) * radius,
+    A = chord_length > triangle_length,
+    nA = cumsum(A),
+    nS = ((row_number() - 1) %% N) + 1,
+    PrA = nA / nS
+  )
 
-triangle_length <- sqrt(3) * samples$radius
-
-mean(chord_length[1:N] > triangle_length[1:N]) # 0.333
-mean(chord_length[(N+1):(2*N)] > triangle_length[(N+1):(2*N)]) #0.5
-mean(chord_length[(2*N+1):(3*N)] > triangle_length[(2*N+1):(3*N)]) #0.25
+results$PrA[N] # 0.333
+results$PrA[2*N] # 0.5
+results$PrA[3*N] # 0.25
 
 # For method A, Pr(ch_len > tr_len) is 0.333
 # For method B, Pr(ch_len > tr_len) is 0.5
