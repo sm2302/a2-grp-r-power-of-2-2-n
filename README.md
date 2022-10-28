@@ -100,6 +100,40 @@ chord_length <- 2 * sin(theta) * radius
 
 ## Method 2 (of 3) - random radial points
 
+For this method, the question instructs to choose a random radius of the circle, and a random point on this radius, and draw the chord through this point and perpendicular to the radius.
+
+However, as the selection of radius is not necessary for computing the chord length (as illustrated below), particularly in our computation method, we can skip choosing the radius.
+
+![The illustration](assets/B1.png)
+
+We may then select a random point on the radius length. Or rather, compute the distance $d \in (0,r)$ of the point from the center 
+
+```R
+d <- runif(N, 0, radius)
+```
+
+![The illustration](assets/B2.png)
+
+Then use the distance $d$ to compute $\theta$ via
+
+$$ \cos{\theta} = \frac{d}{r} $$
+
+```R
+d <- runif(N, 0, radius)
+theta <- acos(d / radius)
+
+# Which can be further simplified as illustrated below
+```
+
+![The illustration](assets/B3.png)
+
+Thus for this second method (randomize radial points), we may simply use:
+
+```R
+theta <- acos(runif(N, 0, 1))
+chord_length <- 2 * sin(theta) * radius
+```
+
 ## Method 3 (of 3) - random midpoints
 
 # Betrand's Paradox
