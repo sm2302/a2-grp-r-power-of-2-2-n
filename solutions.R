@@ -187,6 +187,18 @@ bp_anim <- ggplot() +
   ggforce::geom_circle(aes(x0 = c(0, 3, 6), y0 = 0, r = 1), col = "gray50") +
   ggforce::geom_circle(aes(x0 = c(0, 3, 6), y0 = -2.5, r = 1), col = "gray50") +
   # Plot their corresponding equilateral triangles:
-  geom_segment(data = eqtri_2rows_df, aes(x = x, y = y, xend = xend, yend = yend))
+  geom_segment(data = eqtri_2rows_df, aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Plot Title:
+  annotate(geom = "text", x = 2.65, y = 2.9, label = "Bertrand's Paradox Visualization", size = 23) +
+  # Method Titles:
+  annotate(geom = "text", x = 0, y = 2, label = "Random Endpoints", size = 11) +
+  annotate(geom = "text", x = 3, y = 2, label = "Random Radial Points", size = 11) +
+  annotate(geom = "text", x = 6, y = 2, label = "Random Midpoints", size = 11) +
+  # Visualization Titles:
+  annotate(geom = "text", x = -1.7, y = 0, label = "Random\nDirections", angle = 90, size = 8) +
+  annotate(geom = "text", x = -1.7, y = -2.5, label = "Standardized\nDirections", angle = 90, size = 8) +
+  annotate(geom = "text", x = -1.7, y = -5.5, label = "Distribution", angle = 90, size = 8) +
+  # Fix aspect ratio
+  coord_equal()
 
-print(bp_anim)
+ggsave("bp_anim.png", width = 6000, height = 6000, units = "px")
