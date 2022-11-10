@@ -235,3 +235,25 @@ animate(bp_anim,
         width = 1000, height = 1150, end_pause = 50,
         renderer = gifski_renderer("bp_anim.gif")
 )
+
+
+# Print results in console------------------------------------------------------
+end_values <- N * c(1, 2, 3) # row numbers of each method's final sample
+cat(
+  "Final values for Pr(A) = n(A) / n(S):\n",
+  sprintf(
+    "For method %-24s Pr(A) = %d/%d = %.2f\n",
+    c("A: Random Endpoints,", "B: Random Radial Points,", "C: Random Midpoints,"),
+    samples_df$nA[end_values],
+    samples_df$nS[end_values],
+    samples_df$PrA[end_values]
+  ),
+  sprintf(
+    "\nPlot of Pr(A) against n(S) (%d samples) saved in \"poi_plot.png\"\n",
+    N
+  ),
+  sprintf(
+    "\nBertrand's Paradox visualization (up to %dth sample) saved in \"bp_anim.gif\"\n",
+    N_anim
+  )
+)
