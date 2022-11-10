@@ -1,12 +1,18 @@
 # Results
 
-As the number of outputs $n(S)$ increases, $\Pr(A) = \frac{n(A)}{n(S)}$ converges, depending on randomizing method used, to
+## Animation visualizing Bertrand's Paradox (500 samples, click to play)
+
+![Plot showing convergence of Pr(A)](assets/bp_anim.gif)
+
+As demonstrated above, depending on the method of randomization, the value of $\Pr(A) = \frac{n(A)}{n(S)}$ converges to:
 
 | Method | $Pr(A)$ |
 | ------ | ------- |
 | Random endpoints | $\frac{1}{3}$ |
-| Random radial points | $\frac{1}{2}$ |
-| Random chord midpoints | $\frac{1}{4}$ |
+| Random radial points | $\frac{1}{4}$ |
+| Random chord midpoints | $\frac{1}{2}$ |
+
+## Still image showing convergence of Pr(A) (10000 samples on a logarithmic horizontal scale, still image)
 
 ![Plot showing convergence of Pr(A)](assets/poi_plot.png)
 
