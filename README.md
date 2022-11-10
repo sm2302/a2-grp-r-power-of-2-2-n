@@ -9,8 +9,8 @@ As demonstrated above, depending on the method of randomization, the value of $\
 | Method | $Pr(A)$ |
 | ------ | ------- |
 | Random endpoints | $\frac{1}{3}$ |
-| Random radial points | $\frac{1}{4}$ |
-| Random chord midpoints | $\frac{1}{2}$ |
+| Random radial points | $\frac{1}{2}$ |
+| Random chord midpoints | $\frac{1}{4}$ |
 
 ## Still image showing convergence of Pr(A) (10000 samples on a logarithmic horizontal scale, still image)
 
