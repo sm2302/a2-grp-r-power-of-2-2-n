@@ -122,3 +122,20 @@ samples_anim_df <- samples_df[samples_df$nS <= N_anim, ] %>%
   ) %>%
   # Revert rows' arrangement to their starting order
   arrange(rand_method, nS)
+
+
+# Coordinates of three equilateral triangles to be plotted side by side
+eqtri_row_df <- tibble(
+  x    = c(outer(c(0, sqrt(3) / 2, -sqrt(3) / 2), c(0, 3, 6), "+")),
+  y    = rep(c(1, -0.5, -0.5), 3),
+  xend = c(outer(c(sqrt(3) / 2, -sqrt(3) / 2, 0), c(0, 3, 6), "+")),
+  yend = rep(c(-0.5, -0.5, 1), 3)
+)
+
+# Coordinates of the above but replicated into two rows
+eqtri_2rows_df <- tibble(
+  x    = rep(eqtri_row_df$x, 2),
+  y    = c(eqtri_row_df$y, eqtri_row_df$y - y_offset),
+  xend = rep(eqtri_row_df$xend, 2),
+  yend = c(eqtri_row_df$yend, eqtri_row_df$yend - y_offset),
+)
