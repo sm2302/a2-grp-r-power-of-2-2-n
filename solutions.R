@@ -23,10 +23,12 @@ lapply(packages, library, character.only = TRUE) # Load the packages
 # Initialize constants ---------------------------------------------------------
 
 N <- 100000 # How many samples to generate
+N_anim <- 500
 
 # Radius lengths need not be randomized; so all are standardized with radius 1.
 triangle_length <- sqrt(3) # eqtri length corresponding to circle of radius 1
 
+y_offset <- 2.5
 
 # Generate a dataframe of N number of samples to be plotted as a still image----
 
@@ -87,3 +89,33 @@ poi_plot <- ggplot(samples_df) +
 print(poi_plot)
 
 ggsave("poi_plot.png", width = 2400, height = 1200, units = "px")
+
+
+
+samples_anim_df <- samples_df[samples_df$nS <= N_anim, ] %>%
+  mutate(
+    # Compute variables for drawing chords 
+    direction_theta <- runif(N_anim, 0, 2 * pi),
+    x_offset =
+      ifelse(rand_method == "A) Endpoints", 0,
+             ifelse(rand_method == "B) Radial points", 3, 6)
+      ),
+    
+    rand_chord_x = cos(direction_theta) + x_offset,
+    rand_chord_xend = cos(direction_theta + 2 * theta) + x_offset,
+    rand_chord_y = sin(direction_theta),
+    rand_chord_yend = sin(direction_theta + 2 * theta),
+
+    stacked_chord_x = cos(3 * pi / 2 - theta) + x_offset,
+    stacked_chord_xend = cos(3 * pi / 2 + theta) + x_offset,
+    stacked_chord_y = sin(3 * pi / 2 - theta) - y_offset,
+    stacked_chord_yend = sin(3 * pi / 2 + theta) - y_offset
+  ) %>%
+  
+  arrange(rand_method, desc(chord_length)) %>%
+  group_by(rand_method) %>%
+  mutate(
+    elevation = row_number() / (N_anim / 3)
+  ) %>%
+
+  arrange(rand_method, nS)
