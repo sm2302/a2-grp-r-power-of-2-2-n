@@ -90,6 +90,7 @@ print(poi_plot)
 
 ggsave("poi_plot.png", width = 2400, height = 1200, units = "px")
 
+
 # Extend the dataframe to include variables used for drawing the chords --------
 #   but only up to N_anim amount of samples (too many samples = slow rendering)
 
@@ -139,3 +140,53 @@ eqtri_2rows_df <- tibble(
   xend = rep(eqtri_row_df$xend, 2),
   yend = c(eqtri_row_df$yend, eqtri_row_df$yend - y_offset),
 )
+
+
+# Generate the ggplot for visualizing Bertrand's Paradox -----------------------
+
+theme_set(theme_void())
+
+bp_anim <- ggplot() +
+  # [Row I] Truly randomized chords
+  geom_segment(
+    data = samples_anim_df,
+    aes(
+      x = rand_chord_x,
+      y = rand_chord_y,
+      xend = rand_chord_xend,
+      yend = rand_chord_yend,
+      col = A
+    ),
+    size = 2
+  ) +
+  # [Row II] Same randomized chords but with standardized midpoint directions
+  geom_segment(
+    data = samples_anim_df,
+    aes(
+      x = stacked_chord_x,
+      y = stacked_chord_y,
+      xend = stacked_chord_xend,
+      yend = stacked_chord_yend,
+      col = A
+    ),
+    size = 2
+  ) +
+  # [Row III] Better view of chords i.e. stacked vertically, sorted by lengths
+  geom_segment(
+    data = samples_anim_df,
+    aes(
+      x = stacked_chord_x,
+      xend = stacked_chord_xend,
+      y = elevation - 7,
+      yend = elevation - 7,
+      col = A
+    ),
+    size = 2
+  ) +
+  # Plot the circles' outlines:
+  ggforce::geom_circle(aes(x0 = c(0, 3, 6), y0 = 0, r = 1), col = "gray50") +
+  ggforce::geom_circle(aes(x0 = c(0, 3, 6), y0 = -2.5, r = 1), col = "gray50") +
+  # Plot their corresponding equilateral triangles:
+  geom_segment(data = eqtri_2rows_df, aes(x = x, y = y, xend = xend, yend = yend))
+
+print(bp_anim)
