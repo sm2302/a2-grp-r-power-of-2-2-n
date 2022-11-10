@@ -1,7 +1,19 @@
-# SHORT DESCRIPTION:
+#SHORT DESCRIPTION:
 # This (solutions.R) script contains these steps:
-#   i  ) Generate a tibble of N number of random samples to be plotted
+#   i  ) Generate a tibble of N number of random samples
+#        - rand_method - by which method the chords are randomized
+#        - theta       - main variable differentiating each method
+#        - Pr(A)       - Pr(lengths of a random chord > length of triangle)
 #   ii ) Plotting the convergence of Pr(A) wrt n(S) as a non-animated image
+#   iii) Extend the tibble for animation up to the "N_anim"th sample
+#        - direction_theta - Random angle corresponding to the direction of
+#                            the chord from circle's midpoint
+#        - rand_chord    - collection of chords, generated using direction_theta
+#        - stacked_chord - same as rand_chord, but with standardized direction
+#        - elevation     - variable to be used for sorting chords by length
+#   iv ) Render the animation
+#   v  ) Print final results Pr(A) values in the console
+
 
 # NOTE: The elaboration for computing theta values is in the README
 
