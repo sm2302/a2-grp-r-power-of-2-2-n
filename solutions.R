@@ -188,6 +188,18 @@ bp_anim <- ggplot() +
   ggforce::geom_circle(aes(x0 = c(0, 3, 6), y0 = -2.5, r = 1), col = "gray50") +
   # Plot their corresponding equilateral triangles:
   geom_segment(data = eqtri_2rows_df, aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Dynamic text for Pr(A):
+  geom_text(
+    data = samples_anim_df,
+    aes(
+      y = 1.8, x = x_offset,
+      label = sprintf(
+        "\nPr(A) = %.00f / %.00f = %.02f",
+        nA, nS, PrA
+      )
+    ),
+    size = 8
+  )+
   # Plot Title:
   annotate(geom = "text", x = 2.65, y = 2.9, label = "Bertrand's Paradox Visualization", size = 23) +
   # Method Titles:
@@ -198,7 +210,28 @@ bp_anim <- ggplot() +
   annotate(geom = "text", x = -1.7, y = 0, label = "Random\nDirections", angle = 90, size = 8) +
   annotate(geom = "text", x = -1.7, y = -2.5, label = "Standardized\nDirections", angle = 90, size = 8) +
   annotate(geom = "text", x = -1.7, y = -5.5, label = "Distribution", angle = 90, size = 8) +
-  # Fix aspect ratio
-  coord_equal()
+  # Fix aspect ratio & configure legend:
+  coord_equal() +
+  labs(
+    col = "A = LENGTH(CHORD) > LENGTH(TRIANGLE)   "
+  ) +
+  theme(
+    legend.position = "bottom",
+    legend.margin = margin(t = 0.5, b = 0.5, l = 0.5, r = 0.5, unit = "cm"),
+    legend.background = element_rect(fill = "black"),
+    legend.key.size = unit(3, "cm"), # change legend key size
+    legend.key.height = unit(1, "cm"), # change legend key height
+    legend.key.width = unit(1, "cm"), # change legend key width
+    legend.title = element_text(size = 24, color = "white"), # change legend title font size
+    legend.text = element_text(size = 20, color = "white") # change legend text font size
+  ) +
+  # gganimate related codes:
+  transition_time(nS) + # animate along nS
+  shadow_mark(size = 0.001) # keep previous frames (i.e. drawn chords) in frame
 
-ggsave("bp_anim.png", width = 6000, height = 6000, units = "px")
+# Render visualization of Bertrand's Paradox
+animate(bp_anim,
+        nframes = N_anim + 50, fps = 25,
+        width = 1000, height = 1150, end_pause = 50,
+        renderer = gifski_renderer("bp_anim.gif")
+)
