@@ -23,12 +23,12 @@ lapply(packages, library, character.only = TRUE) # Load the packages
 # Initialize constants ---------------------------------------------------------
 
 N <- 100000 # How many samples to generate
-N_anim <- 500
+N_anim <- 500 # How many out of N samples to include in animation rendering
 
 # Radius lengths need not be randomized; so all are standardized with radius 1.
 triangle_length <- sqrt(3) # eqtri length corresponding to circle of radius 1
 
-y_offset <- 2.5
+y_offset <- 2.5 # How far apart the row of circles are drawn from each other
 
 # Generate a dataframe of N number of samples to be plotted as a still image----
 
@@ -90,32 +90,35 @@ print(poi_plot)
 
 ggsave("poi_plot.png", width = 2400, height = 1200, units = "px")
 
-
+# Extend the dataframe to include variables used for drawing the chords --------
+#   but only up to N_anim amount of samples (too many samples = slow rendering)
 
 samples_anim_df <- samples_df[samples_df$nS <= N_anim, ] %>%
   mutate(
-    # Compute variables for drawing chords 
+    # Compute variables for drawing chords via each method side by side
     direction_theta <- runif(N_anim, 0, 2 * pi),
     x_offset =
       ifelse(rand_method == "A) Endpoints", 0,
              ifelse(rand_method == "B) Radial points", 3, 6)
       ),
-    
+    # [Row I  ] Draw truly random chords
     rand_chord_x = cos(direction_theta) + x_offset,
     rand_chord_xend = cos(direction_theta + 2 * theta) + x_offset,
     rand_chord_y = sin(direction_theta),
     rand_chord_yend = sin(direction_theta + 2 * theta),
-
+    # [Row II ] Alternative drawing:
+    #   Relocate the chords such that all their midpoints lie on a straight line
+    #   while maintaining their exact randomized lengths from "Row I"
     stacked_chord_x = cos(3 * pi / 2 - theta) + x_offset,
     stacked_chord_xend = cos(3 * pi / 2 + theta) + x_offset,
     stacked_chord_y = sin(3 * pi / 2 - theta) - y_offset,
     stacked_chord_yend = sin(3 * pi / 2 + theta) - y_offset
   ) %>%
-  
+  # [Row III] Better view of the chords stacked together, sorted by length
   arrange(rand_method, desc(chord_length)) %>%
   group_by(rand_method) %>%
   mutate(
     elevation = row_number() / (N_anim / 3)
   ) %>%
-
+  # Revert rows' arrangement to their starting order
   arrange(rand_method, nS)
