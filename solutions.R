@@ -176,8 +176,7 @@ bp_anim <- ggplot() +
       xend = rand_chord_xend,
       yend = rand_chord_yend,
       col  = A
-    ),
-    size = 2
+    )
   ) +
   # [Row II] Same randomized chords but with standardized midpoint directions
   geom_segment(
@@ -188,8 +187,7 @@ bp_anim <- ggplot() +
       xend = stacked_chord_xend,
       yend = stacked_chord_yend,
       col  = A
-    ),
-    size = 2
+    )
   ) +
   # [Row III] Better view of chords i.e. stacked vertically, sorted by lengths
   geom_segment(
@@ -200,8 +198,7 @@ bp_anim <- ggplot() +
       y    = y_offset[4] + elevation,
       yend = y_offset[4] + elevation,
       col  = A
-    ),
-    size = 2
+    )
   ) +
   # Plot the six circles' outlines:
   ggforce::geom_circle(aes(
@@ -284,7 +281,7 @@ bp_anim <- ggplot() +
   ) +
   # gganimate related codes:
   transition_time(nS) + # animate along nS
-  shadow_mark(size = 0.001) # keep previous frames (i.e. drawn chords) in frame
+  shadow_mark(size = 0.1) # keep previous frames (i.e. drawn chords) in frame
 
 # Render visualization of Bertrand's Paradox
 animate(bp_anim,
