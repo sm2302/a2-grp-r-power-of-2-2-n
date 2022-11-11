@@ -1,3 +1,27 @@
+<h1 align=center><sub>SM2302 Group Assignment 2:</sub><br />Bertrand's Paradox<br /><sub>by</sub><br /><sup>$2^n$ (Power of 2)</sup></h1>
+
+<div align=center>
+  <table>
+    <tr><th colspan=2>Members</th></tr>
+    <tr><td>Firdaus</td><td>Wafi</td></tr>
+    <tr><td>17B2196</td><td>17B2200</td></tr>
+  </table>
+</div>
+
+# Contents
+1. [Results](#results)
+   1. [Animation visualizing Bertrand's Paradox](#animation-visualizing-bertrands-paradox-500-samples-click-to-play)
+   2. [Plot showing convergence of Pr(A)](plot-showing-convergence-of-pra-100000-samples-on-a-logarithmic-horizontal-scale)
+2. [Summary of approach](#summary-of-approach)
+   1. [Pr(A) values : Computing length of a random set of chords](#pra-values--computing-length-of-a-random-set-of-chords)
+   2. [Drawing : Computing coordinates of endpoints for geom_segment](#drawing--computing-coordinates-of-endpoints-for-geom_segment)
+3. [Code elaboration](#code-elaboration)
+   1. [Equilateral triangle length](#equilateral-triangle-length)
+   2. [Method 1 (of 3) - random endpoints](#method-1-of-3---random-endpoints)
+   3. [Method 2 (of 3) - random radial points](#method-2-of-3---random-radial-points)
+   4. [Method 3 (of 3) - random midpoints](#method-3-of-3---random-midpoints)
+4. [Bertrand's Paradox (assignment instructions)](#betrands-paradox)
+
 # Results
 
 ## Animation visualizing Bertrand's Paradox (500 samples, click to play)
@@ -12,9 +36,66 @@ As demonstrated above, depending on the method of randomization, the value of $\
 | Random radial points | $\frac{1}{2}$ |
 | Random chord midpoints | $\frac{1}{4}$ |
 
-## Still image showing convergence of Pr(A) (10000 samples on a logarithmic horizontal scale, still image)
+## Plot showing convergence of Pr(A) (100000 samples on a logarithmic horizontal scale)
 
 ![Plot showing convergence of Pr(A)](assets/poi_plot.png)
+
+# Summary of approach
+
+This section summarizes our approach in both solutions (empirical and visual). Elaboration of theta computations is in [code elaboration](#code-elaboration) section further below.
+
+Regardless of method (A/B/C), two variables are our main concern:
+- chord lengths, for computation of Pr(A)
+- chord endpoints, for illustrating positions with geom_segment
+
+![Visual summary of the two main approaches](assets/approach_summary.png)
+
+## Pr(A) values : Computing length of a random set of chords
+
+Two required variables,
+1. theta - a vector of random angles $[0,\pi / 2]$
+2. radius - standardized to 1
+
+Computations:
+
+```R
+# Inside tibble/dataframe
+
+theta = runif(N, 0, pi / 2)        # Method A
+theta = acos(runif(N, 0, 1))       # Method B
+theta = acos(sqrt(runif(N, 0, 1))) # Method C
+
+chord_length = 2 * sin(theta) * radius
+triangle_length = sqrt(3) * radius
+A = chord_length > triangle_length
+nA = cumsum(A)
+nS = row_number()
+PrA = nA/nS
+```
+
+## Drawing : Computing coordinates of endpoints for geom_segment
+
+Three required variables,
+1. theta - a vector of random angles $[0,\pi / 2]$
+2. radius - standardized to 1
+3. direction_theta - a vector of random angles $[0, 2 \pi]$
+
+Computations:
+
+```R
+# Inside tibble/dataframe
+
+theta = runif(N, 0, pi / 2)        # Method A
+theta = acos(runif(N, 0, 1))       # Method B
+theta = acos(sqrt(runif(N, 0, 1))) # Method C
+
+direction_theta = runif(N, 0, 2 * pi)
+x    = cos(direction_theta - theta) * radius
+xend = cos(direction_theta + theta) * radius
+y    = sin(direction_theta - theta) * radius
+yend = sin(direction_theta + theta) * radius
+geom_segment(aes(x=x,y=y,xend=xend,yend=yend))
+```
 
 # Code elaboration
 
