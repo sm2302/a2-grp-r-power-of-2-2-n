@@ -1,0 +1,6 @@
+remote_theme: pages-themes/time-machine@v0.2.0
+plugins:
+- jekyll-remote-theme # add this line to the plugins list if you already have one
+
+title: A2-group-R <br/> <sup>Power of 2 (2<sup>n</sup>)</sup>
+description: 2<sup>nd</sup> group coursework for students taking SM2302 in the August 2022 semester

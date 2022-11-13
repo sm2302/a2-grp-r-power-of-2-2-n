@@ -1,16 +1,16 @@
-<h1 align=center><sub>SM2302 Group Assignment 2:</sub><br />Bertrand's Paradox<br /><sub>by</sub><br /><sup>$2^n$ (Power of 2)</sup></h1>
+<h1 align=center><sub>SM2302 Group Assignment 2: </sub><br />Bertrand's Paradox<br /><sub> by </sub><br /><sup>$2^n$ (Power of 2)</sup></h1>
 
 <div align=center>
   <table>
-    <tr><th colspan=2>Members</th></tr>
-    <tr><td>Firdaus</td><td>Wafi</td></tr>
-    <tr><td>17B2196</td><td>17B2200</td></tr>
+    <tr><th colspan=3>Members</th></tr>
+    <tr><th>Name</th><td>Firdaus</td><td>Wafi</td></tr>
+    <tr><th>ID</th><td>17B2196</td><td>17B2200</td></tr>
   </table>
 </div>
 
 # Contents
 1. [Results](#results)
-   1. [Animation visualizing Bertrand's Paradox](#animation-visualizing-bertrands-paradox-500-samples-click-to-play)
+   1. [Animation visualizing Bertrand's Paradox](#animation-visualizing-bertrands-paradox-500-samples)
    2. [Plot showing convergence of Pr(A)](plot-showing-convergence-of-pra-100000-samples-on-a-logarithmic-horizontal-scale)
 2. [Summary of approach](#summary-of-approach)
    1. [Pr(A) values : Computing length of a random set of chords](#pra-values--computing-length-of-a-random-set-of-chords)
@@ -24,7 +24,7 @@
 
 # Results
 
-## Animation visualizing Bertrand's Paradox (500 samples, click to play)
+## Animation visualizing Bertrand's Paradox (500 samples)
 
 ![Plot showing convergence of Pr(A)](assets/bp_anim.gif)
 
